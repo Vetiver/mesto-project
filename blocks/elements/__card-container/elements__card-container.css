@@ -9,3 +9,10 @@
   column-gap: 13px;
   
 }
+
+@media screen and (max-width: 320px) {
+  .elements__card-container {
+    padding-left: 19px;
+  }
+  
+}

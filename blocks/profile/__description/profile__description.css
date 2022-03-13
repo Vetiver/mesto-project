@@ -8,3 +8,14 @@
     
   color: #FFFFFF;
 }
+
+@media screen and (max-width: 320px) {
+  .profile__description {
+    text-align: center;
+    padding-left: 19px;
+    padding-top: 14px;
+    font-size: 14px;
+    line-height: 17px;
+  }
+  
+}
