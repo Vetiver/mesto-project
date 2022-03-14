@@ -9,6 +9,11 @@
   color: #000;
   font-size: 14px;
   line-height: 1.2;
+
+}
+
+.popup__field:focus {
+  outline: none;
 }
 
 @media screen and (max-width) {
