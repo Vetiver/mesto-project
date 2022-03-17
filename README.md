@@ -9,4 +9,4 @@
 
 * [Ссылка на макет в Figma](https://www.figma.com/file/2cn9N9jSkmxD84oJik7xL7/JavaScript.-Sprint-4?node-id=0%3A1)
 
-GP: https://vetiver.github.io/mesto-project/(это просто невозможно, ничего не работает, я не знаю что уже можно сделать, у меня вечно ошибка 500 в гите, гг не сдал, я устал возиться с этим тупым github pages) 
+GP: https://vetiver.github.io/mesto-project/ 
