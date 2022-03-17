@@ -16,7 +16,7 @@
   outline: none;
 }
 
-@media screen and (max-width) {
+@media screen and (max-width: 660px) {
   .popup__field {
     width: 238px;
   }

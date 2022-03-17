@@ -7,7 +7,7 @@
   color: #545454;
 }
 
-@media screen and (max-width: 320px) {
+@media screen and (max-width: 660px) {
   .footer__date {
     font-size: 14px;
     line-height: 17px;

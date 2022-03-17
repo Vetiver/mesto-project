@@ -3,7 +3,7 @@
   padding: 0;
 }
 
-@media screen and (max-width: 320px) {
+@media screen and (max-width: 660px) {
   .header__mesto-logo {
     margin-left: 27px;
   }

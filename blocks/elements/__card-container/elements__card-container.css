@@ -10,7 +10,7 @@
   
 }
 
-@media screen and (max-width: 320px) {
+@media screen and (max-width: 660px) {
   .elements__card-container {
     padding-left: 19px;
   }
