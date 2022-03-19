@@ -4,6 +4,10 @@
   margin-right: 30px;
   width: 22px; 
   height: 19px;
+  background-image: url(../../../images/Vector.svg);
+  background-repeat: no-repeat;
+  border: none;
+  background-color: transparent;
 }
 
 .card__like:hover {
