@@ -11,7 +11,8 @@
     max-width: 282px;
     margin-top: 48px;
     margin-bottom: 36px;
-    margin-left: 19px;
+    margin-left: auto;
+    margin-right: auto;
   }
   
 }
