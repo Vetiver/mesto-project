@@ -1,0 +1,11 @@
+.card__like_active {
+  margin-top: 30px;
+  margin-left: auto;
+  margin-right: 30px;
+  width: 22px; 
+  height: 19px;
+  background-image: url(../../../../images/Vector_active.svg);
+  background-repeat: no-repeat;
+  border: none;
+  background-color: transparent;
+}
