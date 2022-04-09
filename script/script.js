@@ -42,29 +42,11 @@ const initialCards = [
   const cardContain = document.querySelector('.elements__card-container');//контейнер карточек
   const popupZoom = document.querySelector('.popup__zoom');
 
-  initialCards.forEach( (el) => {
-    const cardElement = cardTemplate.querySelector('#card_template').cloneNode(true);
-    cardElement.querySelector('#titleCard').textContent = el.name;
-    cardElement.querySelector('#image').src = el.link;
-    cardElement.querySelector('#image').alt = el.name;
-    cardContain.prepend(cardElement);
-    cardElement.querySelector('.card__like').addEventListener('click', (evt) => { //лайк для добавленных карточек
-      evt.target.classList.toggle('card__like_active');//лайк дефолтных карточек
-    });
-
-    cardElement.querySelector('.card__trash').addEventListener('click', (evt) => {//удаление карточек
-      evt.target.closest('.card').remove();
-    });
-
-    cardElement.querySelector('#image').addEventListener('click', () => {
-      popupZoom.querySelector('.popup__image').src = el.link;//передата значений
-      popupZoom.querySelector('.popup__name-zoom').textContent = el.name;//передата значений//реализация попапа зума
-      popupZoom.querySelector('.popup__image').alt = el.name;
-      openPopup(popupZoom)//открытие попапа
-    });
+  initialCards.forEach((el) => {
+    addCard(el.name, el.link);
 });
-popupZoom.querySelector('#close-zoom').addEventListener('click', () => {//закрытие
-  closePopup(popupZoom);
+  popupZoom.querySelector('#close-zoom').addEventListener('click', () => {//закрытие
+    closePopup(popupZoom);
 });
 
 //-------------------------------------------------------ДОБАВЛЕНИЕ ДЕФОЛТНЫХ КАРТОЧЕК-------------------------------------------------------------
