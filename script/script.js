@@ -148,6 +148,8 @@ const profileButton = document.querySelector('.popup__submit-button');
 const nameInput = formElement.querySelector('#profile-nick');
 const jobInput = formElement.querySelector('#profile-descriptions');
 
+  nameInput.value = profileName.textContent; //Жак записан в поле input
+  jobInput.value = profileJob.textContent; //Работа (р)жака записана в поле input
 
 function editProf(nameValue, jobValue) { //функция редактирования профиля
   profileName.textContent = nameValue;  //замена текстового значения на значения из попапа
@@ -155,9 +157,6 @@ function editProf(nameValue, jobValue) { //функция редактирова
 }
   
 profileButton.addEventListener('click', (evt) => {
-  nameInput.value = profileName.textContent; //Жак записан в поле input
-  jobInput.value = profileJob.textContent; //Работа (р)жака записана в поле input
-
   editProf(nameInput.value, jobInput.value);
   evt.preventDefault();
   closePopup(popupProfileEdit);
