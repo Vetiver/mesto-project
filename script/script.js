@@ -133,13 +133,13 @@ const jobInput = formElement.querySelector('#profile-descriptions');
   nameInput.value = profileName.textContent; //Жак записан в поле input
   jobInput.value = profileJob.textContent; //Работа (р)жака записана в поле input
 
-function editProf(nameValue, jobValue) { //функция редактирования профиля
+function editProfile(nameValue, jobValue) { //функция редактирования профиля
   profileName.textContent = nameValue;  //замена текстового значения на значения из попапа
   profileJob.textContent = jobValue;
 }
   
 profileButton.addEventListener('click', (evt) => {
-  editProf(nameInput.value, jobInput.value);
+  editProfile(nameInput.value, jobInput.value);
   evt.preventDefault();
   closePopup(popupProfileEdit);
 });
