@@ -43,7 +43,7 @@ const initialCards = [
   const popupZoom = document.querySelector('.popup__zoom');
 
   initialCards.forEach((el) => {
-    addCard(el.name, el.link);
+    cardAdd(el.name, el.link);
 });
   popupZoom.querySelector('#close-zoom').addEventListener('click', () => {//закрытие
     closePopup(popupZoom);
@@ -53,8 +53,8 @@ const initialCards = [
 //-------------------------------------------------------------------------------------------------------------------------------------------------
 
 const popupProfileEdit = document.querySelector('.popup__profile-edit');//выбор индивидуального класса для формы редактирования профиля
-const ProfileEdit = document.querySelector('.profile__edit-button');//выбор кнопки вызова формы профиля
-const addCards = document.querySelector('.profile__add-button');//выбор кнопки для добавления карточки места
+const profileEdit = document.querySelector('.profile__edit-button');//выбор кнопки вызова формы профиля
+const cardsAddButton = document.querySelector('.profile__add-button');//выбор кнопки для добавления карточки места
 const popupPlace = document.querySelector('.popup__place');//выбор индивидуального класса для формы места
 const popupContainerProfile = popupProfileEdit.querySelector('.popup__container');
 const popupCloseProfile = popupContainerProfile.querySelector('.popup__first-close');//выбор кнопки закрытия для формы профиля
@@ -64,7 +64,9 @@ const popupClosePlace = document.querySelector('.popup__second-close');//выб�
 
 //реализация открытия и закрытия двух форм
 
-ProfileEdit.addEventListener('click', () => {
+profileEdit.addEventListener('click', () => {
+  nameInput.value = profileName.textContent; //Жак записан в поле input
+  jobInput.value = profileJob.textContent; //Работа (р)жака записана в поле input
   openPopup(popupProfileEdit);
 });
 //для формы профиля, обращение к индивидуальному классу для каждой формы, открытие
@@ -73,7 +75,7 @@ popupCloseProfile.addEventListener('click', () => {
   closePopup(popupProfileEdit);
 });
 //для формы профиля закрытие
-addCards.addEventListener('click', () => {
+cardsAddButton.addEventListener('click', () => {
   openPopup(popupPlace);
 });
 //для формы места открытие
@@ -83,12 +85,14 @@ popupClosePlace.addEventListener('click', () => {
 //для формы места закрытие
 //-------------------------------------------------------ОТКРЫТИЕ И ЗАКРЫТИЕ 2 ФОРМ-----------------------------------------------------------------
 //--------------------------------------------------------------------------------------------------------------------------------------------------
-
-function addCard(placeValue, placeImg) {
+const zoomImage = popupZoom.querySelector('.popup__image');
+const zoomName = popupZoom.querySelector('.popup__name-zoom');
+function cardAdd(placeValue, placeImg) {
   const cardElement = cardTemplate.querySelector('#card_template').cloneNode(true);//функция выбирает template потом клонирует содержимое во 2 переменную
+  const cardElementImage = cardElement.querySelector('#image');
   cardElement.querySelector('#titleCard').textContent = placeValue;//передает параметр из строки с названием
-  cardElement.querySelector('#image').src = placeImg;
-  cardElement.querySelector('#image').alt = placeValue;
+  cardElementImage.src = placeImg;
+  cardElementImage.alt = placeValue;
   cardContain.prepend(cardElement);
   cardElement.querySelector('.card__like').addEventListener('click', (evt) => { //лайк 
     evt.target.classList.toggle('card__like_active');
@@ -96,29 +100,28 @@ function addCard(placeValue, placeImg) {
   cardElement.querySelector('.card__trash').addEventListener('click', (evt) => {//удаление карточек
     evt.target.closest('.card').remove();
   });
-  cardElement.querySelector('#image').addEventListener('click', () => {//реализация попапа зума в добавленных карточках
-    popupZoom.querySelector('.popup__image').src = placeImg;//передача значений
-    popupZoom.querySelector('.popup__name-zoom').textContent = placeValue;//передача значений
-    popupZoom.querySelector('.popup__image').alt =  placeValue;
+  cardElementImage.addEventListener('click', () => {//реализация попапа зума в добавленных карточках
+    zoomImage.src = placeImg;//передача значений
+    zoomName.textContent = placeValue;//передача значений
+    zoomImage.alt =  placeValue;
     openPopup(popupZoom)//открытие попапа
   });
 
   popupZoom.querySelector('#close-zoom').addEventListener('click', () => {//закрытие попапа 
     closePopup(popupZoom);
   });
-  document.querySelector('#place_name').value = '';
-  document.querySelector('#place_src').value = '';
+  
 };
 //функция выбирает template потом клонирует содержимое во 2 переменную
-
+const place = document.querySelector('#place_name');//считывает строку и передает содержимое параметром(название карточки)
+const img = document.querySelector('#place_src');//считывает строку и передает содержимое параметром(ссылка)
 //событие нажатия на кнопку и добавление карточки 
 addEventListener('submit', (evt) => {
-  const place = document.querySelector('#place_name').value;//считывает строку и передает содержимое параметром(название карточки)
-  const img = document.querySelector('#place_src').value;//считывает строку и передает содержимое параметром(ссылка)
   evt.preventDefault();
-  addCard(place, img);
+  cardAdd(place.value, img.value);
   closePopup(popupPlace);//сразу закрывает диалоговое окно
-  
+  document.querySelector('#place_name').value = '';
+  document.querySelector('#place_src').value = '';
 });
 //-------------------------------------------------------ДОБАВЛЕНИЕ КАРТОЧКИ-------------------------------------------------------------------------
 //---------------------------------------------------------------------------------------------------------------------------------------------------
@@ -130,8 +133,6 @@ const profileButton = document.querySelector('.popup__submit-button');
 const nameInput = formElement.querySelector('#profile-nick');
 const jobInput = formElement.querySelector('#profile-descriptions');
 
-  nameInput.value = profileName.textContent; //Жак записан в поле input
-  jobInput.value = profileJob.textContent; //Работа (р)жака записана в поле input
 
 function editProfile(nameValue, jobValue) { //функция редактирования профиля
   profileName.textContent = nameValue;  //замена текстового значения на значения из попапа
