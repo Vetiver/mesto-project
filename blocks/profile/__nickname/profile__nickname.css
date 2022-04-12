@@ -8,6 +8,7 @@
   /* or 114% */
   color: #FFFFFF;
   text-overflow: ellipsis;
+  white-space: nowrap;
   overflow: hidden;
 }
 
