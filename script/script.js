@@ -71,6 +71,32 @@ profileEdit.addEventListener('click', () => {
 });
 //для формы профиля, обращение к индивидуальному классу для каждой формы, открытие
 
+document.addEventListener('keydown', (evt) => {
+  if(evt.key === 'Escape') {
+    closePopup(popupProfileEdit);
+    closePopup(popupPlace);
+    closePopup(popupZoom);
+  }
+});
+
+popupProfileEdit.addEventListener('click', (evt) => {
+  if (evt.target.classList.contains('popup')) {
+    closePopup(popupProfileEdit);
+  }
+})
+
+popupPlace.addEventListener('click', (evt) => {
+  if (evt.target.classList.contains('popup')) {
+    closePopup(popupPlace);
+  }
+})
+
+popupZoom.addEventListener('click', (evt) => {
+  if (evt.target.classList.contains('popup__zoom')) {
+    closePopup(popupZoom);
+  }
+})
+
 popupCloseProfile.addEventListener('click', () => {
   closePopup(popupProfileEdit);
 });
@@ -82,6 +108,8 @@ cardsAddButton.addEventListener('click', () => {
 popupClosePlace.addEventListener('click', () => {
   closePopup(popupPlace);
 });
+
+
 //для формы места закрытие
 //-------------------------------------------------------ОТКРЫТИЕ И ЗАКРЫТИЕ 2 ФОРМ-----------------------------------------------------------------
 //--------------------------------------------------------------------------------------------------------------------------------------------------
@@ -147,12 +175,74 @@ profileButton.addEventListener('click', (evt) => {
 //-------------------------------------------------------РЕДАКТИРОВАНИЕ ПРОФИЛЯ---------------------------------------------------------------------- 
 //---------------------------------------------------------------------------------------------------------------------------------------------------
 
+const profileSubButt = document.querySelector('#prof-but')
+const profileErrorLow = document.querySelector('#inputLowName');
+const profileErrorZero = document.querySelector('#inputZeroName');
+const profileErrorNone = document.querySelector('#inputZeroJob');
+const profileErrorLowJob = document.querySelector('#inputLowJob')
 
+/*nameInput.addEventListener('input', (evt) => {
+  profileValid()
+  if (nameInput.value.length == 0) {
+    profileErrorZero.classList.add('popup__profile-error_active')
+  } else {
+    profileErrorZero.classList.remove('popup__profile-error_active')
+  }
+  if((nameInput.value.length < 2 & nameInput.value.length !== 0) || nameInput.value.length > 40) {
+    profileErrorLow.classList.add('popup__profile-error_active');
+  } else {
+    profileErrorLow.classList.remove('popup__profile-error_active');
+  }
+})
 
+jobInput.addEventListener('input', (evt) => {
+  profileValid()
+  if (jobInput.value.length == 0) {
+    profileErrorNone.classList.add('popup__profile-error_active')
+  } else {
+    profileErrorNone.classList.remove('popup__profile-error_active')
+  }
+  if((jobInput.value.length < 2 & jobInput.value.length !== 0) || jobInput.value.length > 200) {
+    profileErrorLowJob.classList.add('popup__profile-error_active');
+  } else {
+    profileErrorLowJob.classList.remove('popup__profile-error_active');
+  }
+})*/
 
+function profileValid() {
+  if(nameInput.validity.valid & jobInput.validity.valid) {
+    profileSubButt.classList.remove('popup__submit-button_disabled')
+    profileSubButt.classList.add('popup__submit-button')
+    profileSubButt.disabled = false;
+  } else {
+    profileSubButt.classList.add('popup__submit-button_disabled')
+    profileSubButt.classList.remove('popup__submit-button')
+    profileSubButt.disabled = true;
+  }
+ }
 
- 
+ const formProfile = document.querySelector('.popup__form-profile');
+ const inputProfile = formProfile.querySelectorAll('.popup__field');
+ inputProfile.forEach(target => {
+   target.addEventListener('input', evt => {
+     
+   })
+ });
   
+function showError () {
+  if (nameInput.value.length == 0) {
+    profileErrorZero.classList.add('popup__profile-error_active')
+  } else {
+    profileErrorZero.classList.remove('popup__profile-error_active')
+  }
+  if((nameInput.value.length < 2 & nameInput.value.length !== 0) || nameInput.value.length > 40) {
+    profileErrorLow.classList.add('popup__profile-error_active');
+  } else {
+    profileErrorLow.classList.remove('popup__profile-error_active');
+  }
+}
+
+
 
 
 
