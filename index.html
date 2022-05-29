@@ -54,14 +54,12 @@
 
           <form class="popup__form popup__form-profile" action="" method="get" name="form" novalidate>
             <label class="popup__label">
-              <input class="popup__field" type="text" name="profile-nickname" id="profile-nick" placeholder="Имя"  required minlength="2" maxlength="20">
-              <span class="popup__profile-error" id="inputLowName">Минимальное число символов 2. Длина текста сейчас 1 символ</span>
-              <span class="popup__profile-error" id="inputZeroName">Вы пропустили это поле.</span>
+              <input class="popup__field" type="text" name="profile-nickname" id="profile-nick" placeholder="Имя"  required minlength="2" maxlength="40">
+              <span class="popup__profile-error profile-nick-error" id="inputLowName"></span>
             </label>
             <label class="popup__label">
               <input class="popup__field" type="text" name="profile-description" id="profile-descriptions" placeholder="О себе"  required minlength="2" maxlength="200">
-              <span class="popup__profile-error" id="inputLowJob">Минимальное число символов 2. Длина текста сейчас 1 символ</span>
-              <span class="popup__profile-error" id="inputZeroJob">Вы пропустили это поле.</span>
+              <span class="popup__profile-error profile-descriptions-error" id="inputLowJob"></span>
             </label>
             <button class="popup__submit-button" disabled= false id="prof-but" type="submit" value="Сохранить" aria-label="Кнопка для сохранения">Сохранить</button>
           </form>
@@ -78,9 +76,11 @@
           <form class="popup__form popup__form-place" action="" method="get" name="form" novalidate>
             <label class="popup__label">
               <input class="popup__field" type="text" name="profile-nickname" id="place_name" placeholder="Название"  required>
+              <span class="popup__profile-error place_name-error" id="inputLowName"></span>
             </label>
             <label class="popup__label">
               <input class="popup__field" type="url" name="profile-description" id="place_src" placeholder="Ссылка на картинку"  required>
+              <span class="popup__profile-error place_src-error" id="inputLowName"></span>
             </label>
             <button id='but_sub' class="popup__submit-button" type="submit" value="Сохранить" aria-label="Кнопка для сохранения">Создать</button><!--поменял тип кнопки если что-->
           </form>

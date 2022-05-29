@@ -175,75 +175,83 @@ profileButton.addEventListener('click', (evt) => {
 //-------------------------------------------------------РЕДАКТИРОВАНИЕ ПРОФИЛЯ---------------------------------------------------------------------- 
 //---------------------------------------------------------------------------------------------------------------------------------------------------
 
-const profileSubButt = document.querySelector('#prof-but')
-const profileErrorLow = document.querySelector('#inputLowName');
-const profileErrorZero = document.querySelector('#inputZeroName');
-const profileErrorNone = document.querySelector('#inputZeroJob');
-const profileErrorLowJob = document.querySelector('#inputLowJob')
 
-/*nameInput.addEventListener('input', (evt) => {
-  profileValid()
-  if (nameInput.value.length == 0) {
-    profileErrorZero.classList.add('popup__profile-error_active')
-  } else {
-    profileErrorZero.classList.remove('popup__profile-error_active')
-  }
-  if((nameInput.value.length < 2 & nameInput.value.length !== 0) || nameInput.value.length > 40) {
-    profileErrorLow.classList.add('popup__profile-error_active');
-  } else {
-    profileErrorLow.classList.remove('popup__profile-error_active');
-  }
-})
 
-jobInput.addEventListener('input', (evt) => {
-  profileValid()
-  if (jobInput.value.length == 0) {
-    profileErrorNone.classList.add('popup__profile-error_active')
-  } else {
-    profileErrorNone.classList.remove('popup__profile-error_active')
-  }
-  if((jobInput.value.length < 2 & jobInput.value.length !== 0) || jobInput.value.length > 200) {
-    profileErrorLowJob.classList.add('popup__profile-error_active');
-  } else {
-    profileErrorLowJob.classList.remove('popup__profile-error_active');
-  }
-})*/
+const showError = (formElement, inputElement, errorMessage) => {
+  const errorElement = formElement.querySelector(`.${inputElement.id}-error`);
+  inputElement.style.borderBottom = '1px solid red';
+  errorElement.textContent = errorMessage;
+  errorElement.classList.add('popup__profile-error_active');
+}
 
-function profileValid() {
-  if(nameInput.validity.valid & jobInput.validity.valid) {
-    profileSubButt.classList.remove('popup__submit-button_disabled')
-    profileSubButt.classList.add('popup__submit-button')
-    profileSubButt.disabled = false;
-  } else {
-    profileSubButt.classList.add('popup__submit-button_disabled')
-    profileSubButt.classList.remove('popup__submit-button')
-    profileSubButt.disabled = true;
-  }
- }
+const hideError = (formElement, inputElement) => {
+  const errorElement = formElement.querySelector(`.${inputElement.id}-error`);
+  inputElement.style.borderBottom = '1px solid rgba(0, 0, 0, 0.2)';
+  errorElement.textContent = '';
+  errorElement.classList.remove('popup__profile-error_active');
+}
 
- const formProfile = document.querySelector('.popup__form-profile');
- const inputProfile = formProfile.querySelectorAll('.popup__field');
- inputProfile.forEach(target => {
-   target.addEventListener('input', evt => {
-     
-   })
- });
-  
-function showError () {
-  if (nameInput.value.length == 0) {
-    profileErrorZero.classList.add('popup__profile-error_active')
+const setCustomErrorMessage = (inputElement, errorMessage) => {
+  if(inputElement.type.toString() === 'url') {
+      switch (inputElement.validity.typeMismatch) {
+        case true: errorMessage = 'Введите адрес сайта.';
+        break;
+        case false: errorMessage = '';
+        break;
+      } 
+    } else if (inputElement.validity.valueMissing) {
+      errorMessage = 'Вы пропустили это поле.'
+    } else { 
+      errorMessage = inputElement.validationMessage;
+    }
+    return errorMessage;
+}
+
+const checkInputValidaty = (formElement, inputElement) => {
+  let errorWarning = '';
+  if(!inputElement.validity.valid) {
+    showError(formElement, inputElement, setCustomErrorMessage(inputElement, errorWarning));
   } else {
-    profileErrorZero.classList.remove('popup__profile-error_active')
-  }
-  if((nameInput.value.length < 2 & nameInput.value.length !== 0) || nameInput.value.length > 40) {
-    profileErrorLow.classList.add('popup__profile-error_active');
-  } else {
-    profileErrorLow.classList.remove('popup__profile-error_active');
+    hideError(formElement, inputElement);
   }
 }
 
+const hasInvalidInput = (inputList) => {
+  return inputList.some((inputElement) => {
+    return !inputElement.validity.valid;
+  });
+};
 
+const toggleButtonState = (inputList, submitButton) => {
+  if (hasInvalidInput(inputList)) {
+    submitButton.disabled = true;
+  } else {
+    submitButton.disabled = false;
+  }
+}
 
+const setEventListeners = (formElement) => {
+  const inputList = Array.from(formElement.querySelectorAll('.popup__field'));
+  const submitButton = formElement.querySelector('.popup__submit-button');
+  toggleButtonState(inputList, submitButton);
+  inputList.forEach((inputElement) => {
+    inputElement.addEventListener('input', function() {
+      checkInputValidaty(formElement, inputElement);
+      toggleButtonState(inputList, submitButton);
+    });
+  });
+};
+  
+const enableValidation = () => {
+  const formList = Array.from(document.querySelectorAll('.popup__form'));
+  formList.forEach((formElement) => {
+    formElement.addEventListener('submit', (evt) => {
+      evt.preventDefault();
+    });
+    setEventListeners(formElement);
+  });
+};
 
+enableValidation();
 
 
