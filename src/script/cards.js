@@ -1,3 +1,4 @@
+import {openPopup, closePopup} from './modals.js';
 const cardTemplate = document.querySelector('#card__template').content; 
 const cardContain = document.querySelector('.elements__card-container');
 const popupZoom = document.querySelector('.popup__zoom');

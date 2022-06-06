@@ -34,7 +34,7 @@ const initialCards = [
   ];
 
   const popupZoom = document.querySelector('.popup__zoom');
-
+  
   initialCards.forEach((el) => {
     cardAdd(el.name, el.link);
 });
