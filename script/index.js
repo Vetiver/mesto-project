@@ -1,12 +1,7 @@
-function openPopup(popup) {
-  popup.classList.add('popup_opened');
-};//функция открытия любого попапа
-
-function closePopup(popup) {
-  popup.classList.remove('popup_opened');
-};//функция закрытия любого попапа
-
-
+import {openPopup, closePopup} from './modals.js';
+import {cardAdd} from './cards.js';
+import {editProfile, profileName, profileJob} from './profile.js';
+import {enableValidation} from './validation.js';
 //---------------------------------------------------------------------Функции открытия и закрытия-----------------------------------------------------------
 //-----------------------------------------------------------------------------------------------------------------------------------------------------------
 //Добавление дефолтных карточек
@@ -37,9 +32,6 @@ const initialCards = [
   }
   ];
 
-
-  const cardTemplate = document.querySelector('#card__template').content; 
-  const cardContain = document.querySelector('.elements__card-container');//контейнер карточек
   const popupZoom = document.querySelector('.popup__zoom');
 
   initialCards.forEach((el) => {
@@ -113,33 +105,9 @@ popupClosePlace.addEventListener('click', () => {
 //для формы места закрытие
 //-------------------------------------------------------ОТКРЫТИЕ И ЗАКРЫТИЕ 2 ФОРМ-----------------------------------------------------------------
 //--------------------------------------------------------------------------------------------------------------------------------------------------
-const zoomImage = popupZoom.querySelector('.popup__image');
-const zoomName = popupZoom.querySelector('.popup__name-zoom');
-function cardAdd(placeValue, placeImg) {
-  const cardElement = cardTemplate.querySelector('#card_template').cloneNode(true);//функция выбирает template потом клонирует содержимое во 2 переменную
-  const cardElementImage = cardElement.querySelector('#image');
-  cardElement.querySelector('#titleCard').textContent = placeValue;//передает параметр из строки с названием
-  cardElementImage.src = placeImg;
-  cardElementImage.alt = placeValue;
-  cardContain.prepend(cardElement);
-  cardElement.querySelector('.card__like').addEventListener('click', (evt) => { //лайк 
-    evt.target.classList.toggle('card__like_active');
-  });
-  cardElement.querySelector('.card__trash').addEventListener('click', (evt) => {//удаление карточек
-    evt.target.closest('.card').remove();
-  });
-  cardElementImage.addEventListener('click', () => {//реализация попапа зума в добавленных карточках
-    zoomImage.src = placeImg;//передача значений
-    zoomName.textContent = placeValue;//передача значений
-    zoomImage.alt =  placeValue;
-    openPopup(popupZoom)//открытие попапа
-  });
-
   popupZoom.querySelector('#close-zoom').addEventListener('click', () => {//закрытие попапа 
     closePopup(popupZoom);
   });
-  
-};
 //функция выбирает template потом клонирует содержимое во 2 переменную
 const place = document.querySelector('#place_name');//считывает строку и передает содержимое параметром(название карточки)
 const img = document.querySelector('#place_src');//считывает строку и передает содержимое параметром(ссылка)
@@ -154,19 +122,11 @@ addEventListener('submit', (evt) => {
 //-------------------------------------------------------ДОБАВЛЕНИЕ КАРТОЧКИ-------------------------------------------------------------------------
 //---------------------------------------------------------------------------------------------------------------------------------------------------
 
-const profileName = document.querySelector('.profile__nickname');
-const profileJob = document.querySelector('.profile__description');
 const formElement = document.querySelector('.popup__profile-edit');
 const profileButton = document.querySelector('.popup__submit-button');
 const nameInput = formElement.querySelector('#profile-nick');
 const jobInput = formElement.querySelector('#profile-descriptions');
 
-
-function editProfile(nameValue, jobValue) { //функция редактирования профиля
-  profileName.textContent = nameValue;  //замена текстового значения на значения из попапа
-  profileJob.textContent = jobValue;
-}
-  
 profileButton.addEventListener('click', (evt) => {
   editProfile(nameInput.value, jobInput.value);
   evt.preventDefault();
@@ -174,83 +134,6 @@ profileButton.addEventListener('click', (evt) => {
 });
 //-------------------------------------------------------РЕДАКТИРОВАНИЕ ПРОФИЛЯ---------------------------------------------------------------------- 
 //---------------------------------------------------------------------------------------------------------------------------------------------------
-
-
-
-const showError = (formElement, inputElement, errorMessage) => {
-  const errorElement = formElement.querySelector(`.${inputElement.id}-error`);
-  inputElement.style.borderBottom = '1px solid red';
-  errorElement.textContent = errorMessage;
-  errorElement.classList.add('popup__profile-error_active');
-}
-
-const hideError = (formElement, inputElement) => {
-  const errorElement = formElement.querySelector(`.${inputElement.id}-error`);
-  inputElement.style.borderBottom = '1px solid rgba(0, 0, 0, 0.2)';
-  errorElement.textContent = '';
-  errorElement.classList.remove('popup__profile-error_active');
-}
-
-const setCustomErrorMessage = (inputElement, errorMessage) => {
-  if(inputElement.type.toString() === 'url') {
-      switch (inputElement.validity.typeMismatch) {
-        case true: errorMessage = 'Введите адрес сайта.';
-        break;
-        case false: errorMessage = '';
-        break;
-      } 
-    } else if (inputElement.validity.valueMissing) {
-      errorMessage = 'Вы пропустили это поле.'
-    } else { 
-      errorMessage = inputElement.validationMessage;
-    }
-    return errorMessage;
-}
-
-const checkInputValidaty = (formElement, inputElement) => {
-  let errorWarning = '';
-  if(!inputElement.validity.valid) {
-    showError(formElement, inputElement, setCustomErrorMessage(inputElement, errorWarning));
-  } else {
-    hideError(formElement, inputElement);
-  }
-}
-
-const hasInvalidInput = (inputList) => {
-  return inputList.some((inputElement) => {
-    return !inputElement.validity.valid;
-  });
-};
-
-const toggleButtonState = (inputList, submitButton) => {
-  if (hasInvalidInput(inputList)) {
-    submitButton.disabled = true;
-  } else {
-    submitButton.disabled = false;
-  }
-}
-
-const setEventListeners = (formElement) => {
-  const inputList = Array.from(formElement.querySelectorAll('.popup__field'));
-  const submitButton = formElement.querySelector('.popup__submit-button');
-  toggleButtonState(inputList, submitButton);
-  inputList.forEach((inputElement) => {
-    inputElement.addEventListener('input', function() {
-      checkInputValidaty(formElement, inputElement);
-      toggleButtonState(inputList, submitButton);
-    });
-  });
-};
-  
-const enableValidation = () => {
-  const formList = Array.from(document.querySelectorAll('.popup__form'));
-  formList.forEach((formElement) => {
-    formElement.addEventListener('submit', (evt) => {
-      evt.preventDefault();
-    });
-    setEventListeners(formElement);
-  });
-};
 
 enableValidation();
 
