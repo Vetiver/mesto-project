@@ -9,20 +9,19 @@
     <title>Mesto</title>
     <link rel="stylesheet" href="pages/index.css">
 
-    <script type="module" src="./script/index.js" async></script>
   </head>
 
   <body class="page">
     <div class="page__container">
 
       <header class="header">
-        <img src="./images/logo.svg" alt="Логотип" class="header__mesto-logo">
+        <img src="<%=require('./images/logo.svg')%>" alt="Логотип" class="header__mesto-logo">
       </header>
 
       <main>
 
         <section class="profile">
-          <img src="./images/image-avatar.png" alt="Аватар" class="profile__avatar">
+          <img src="<%=require('./images/image-avatar.png')%>" alt="Аватар" class="profile__avatar">
           <div class="profile__intro">
             <div class="profile__info">
               <h1 class="profile__nickname">(р)Жак-Ив Кусто</h1>
