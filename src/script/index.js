@@ -136,6 +136,14 @@ profileButton.addEventListener('click', (evt) => {
 //-------------------------------------------------------РЕДАКТИРОВАНИЕ ПРОФИЛЯ---------------------------------------------------------------------- 
 //---------------------------------------------------------------------------------------------------------------------------------------------------
 
-enableValidation();
+enableValidation({
+  formSelector: '.popup__form',
+  inputSelector: '.popup__field',
+  submitButtonSelector: '.popup__submit-button',
+  inactiveButtonClass: 'popup__submit-button_disabled',
+  inputErrorClass: 'popup__field_tipe_error',
+  errorClass: 'popup__profile-error_active'
+}); 
+
 
 

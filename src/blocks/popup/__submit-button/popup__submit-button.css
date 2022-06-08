@@ -18,6 +18,14 @@
   opacity: 0.8;
 }
 
+.popup__submit-button:disabled {
+  border: 1px solid #000;
+  opacity: 0.2;
+  background: #fff;
+  color: #000;
+  cursor: not-allowed;
+}
+
 @media screen and (max-width: 660px) {
   .popup__submit-button {
     margin-top: 15px;
