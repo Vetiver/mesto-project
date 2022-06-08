@@ -5,14 +5,12 @@ const popupZoom = document.querySelector('.popup__zoom');
 const zoomImage = popupZoom.querySelector('.popup__image');
 const zoomName = popupZoom.querySelector('.popup__name-zoom');
 
-
-function cardAdd(placeValue, placeImg) {
+function createCard(placeValue, placeImg) {
   const cardElement = cardTemplate.querySelector('#card_template').cloneNode(true);//функция выбирает template потом клонирует содержимое во 2 переменную
   const cardElementImage = cardElement.querySelector('#image');
   cardElement.querySelector('#titleCard').textContent = placeValue;//передает параметр из строки с названием
   cardElementImage.src = placeImg;
-  cardElementImage.alt = placeValue;
-  cardContain.prepend(cardElement);
+  cardElementImage.alt = placeValue;// тут создаете карточку и возвращаете ее
   cardElement.querySelector('.card__like').addEventListener('click', (evt) => { //лайк 
     evt.target.classList.toggle('card__like_active');
   });
@@ -25,6 +23,15 @@ function cardAdd(placeValue, placeImg) {
     zoomImage.alt =  placeValue;
     openPopup(popupZoom)//открытие попапа
   });
+return cardElement
 }
 
-export {cardAdd};
+function addCard(placeValue, placeImg) {
+  const cardElement = createCard(placeValue, placeImg);
+  cardContain.prepend(cardElement);
+ 
+ 
+
+}
+
+export {addCard};

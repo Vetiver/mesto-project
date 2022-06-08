@@ -1,5 +1,5 @@
-import {openPopup, closePopup} from './modals.js';
-import {cardAdd} from './cards.js';
+import {openPopup, closePopup, closeByEscape} from './modals.js';
+import {addCard} from './cards.js';
 import {editProfile, profileName, profileJob} from './profile.js';
 import {enableValidation} from './validation.js';
 import '../pages/index.css';
@@ -36,7 +36,7 @@ const initialCards = [
   const popupZoom = document.querySelector('.popup__zoom');
   
   initialCards.forEach((el) => {
-    cardAdd(el.name, el.link);
+    addCard(el.name, el.link);
 });
   popupZoom.querySelector('#close-zoom').addEventListener('click', () => {//закрытие
     closePopup(popupZoom);
@@ -61,16 +61,11 @@ profileEdit.addEventListener('click', () => {
   nameInput.value = profileName.textContent; //Жак записан в поле input
   jobInput.value = profileJob.textContent; //Работа (р)жака записана в поле input
   openPopup(popupProfileEdit);
+  document.addEventListener('keydown', closeByEscape);
 });
 //для формы профиля, обращение к индивидуальному классу для каждой формы, открытие
 
-document.addEventListener('keydown', (evt) => {
-  if(evt.key === 'Escape') {
-    closePopup(popupProfileEdit);
-    closePopup(popupPlace);
-    closePopup(popupZoom);
-  }
-});
+
 
 popupProfileEdit.addEventListener('click', (evt) => {
   if (evt.target.classList.contains('popup')) {
@@ -106,29 +101,31 @@ popupClosePlace.addEventListener('click', () => {
 //для формы места закрытие
 //-------------------------------------------------------ОТКРЫТИЕ И ЗАКРЫТИЕ 2 ФОРМ-----------------------------------------------------------------
 //--------------------------------------------------------------------------------------------------------------------------------------------------
-  popupZoom.querySelector('#close-zoom').addEventListener('click', () => {//закрытие попапа 
-    closePopup(popupZoom);
-  });
+
 //функция выбирает template потом клонирует содержимое во 2 переменную
+const formPlace = document.querySelector('.popup__form-place');
 const place = document.querySelector('#place_name');//считывает строку и передает содержимое параметром(название карточки)
 const img = document.querySelector('#place_src');//считывает строку и передает содержимое параметром(ссылка)
 //событие нажатия на кнопку и добавление карточки 
-addEventListener('submit', (evt) => {
+formPlace.addEventListener('submit', (evt) => {
   evt.preventDefault();
-  cardAdd(place.value, img.value);
+  addCard(place.value, img.value);
   closePopup(popupPlace);//сразу закрывает диалоговое окно
   place.value = '';
   img.value = '';
+  if (place.value.length == 0 && img.value.length == 0) {
+    const placeButton = formPlace.querySelector('.popup__submit-button');
+    placeButton.disabled = true;
+  }
 });
 //-------------------------------------------------------ДОБАВЛЕНИЕ КАРТОЧКИ-------------------------------------------------------------------------
 //---------------------------------------------------------------------------------------------------------------------------------------------------
 
-const formElement = document.querySelector('.popup__profile-edit');
-const profileButton = document.querySelector('.popup__submit-button');
-const nameInput = formElement.querySelector('#profile-nick');
-const jobInput = formElement.querySelector('#profile-descriptions');
+const profileForm = document.querySelector('.popup__profile-edit');
+const nameInput = profileForm.querySelector('#profile-nick');
+const jobInput = profileForm.querySelector('#profile-descriptions');
 
-profileButton.addEventListener('click', (evt) => {
+profileForm.addEventListener('submit', (evt) => {
   editProfile(nameInput.value, jobInput.value);
   evt.preventDefault();
   closePopup(popupProfileEdit);
