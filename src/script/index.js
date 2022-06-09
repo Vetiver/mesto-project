@@ -61,7 +61,6 @@ profileEdit.addEventListener('click', () => {
   nameInput.value = profileName.textContent; //Жак записан в поле input
   jobInput.value = profileJob.textContent; //Работа (р)жака записана в поле input
   openPopup(popupProfileEdit);
-  document.addEventListener('keydown', closeByEscape);
 });
 //для формы профиля, обращение к индивидуальному классу для каждой формы, открытие
 
