@@ -3,10 +3,12 @@ import {addCard} from './cards.js';
 import {editProfile, profileName, profileJob} from './profile.js';
 import {enableValidation} from './validation.js';
 import '../pages/index.css';
+import {initialCards, postCards, profileChange, avatarChange, addLike, deliteLike, getInfo, deletePhotocard} from './api.js';
 //---------------------------------------------------------------------Функции открытия и закрытия-----------------------------------------------------------
 //-----------------------------------------------------------------------------------------------------------------------------------------------------------
 //Добавление дефолтных карточек
-const initialCards = [
+
+/*const initialCards = [
   {
     name: 'Архыз',
     link: 'https://pictures.s3.yandex.net/frontend-developer/cards-compressed/arkhyz.jpg'
@@ -31,13 +33,19 @@ const initialCards = [
     name: 'Байкал',
     link: 'https://pictures.s3.yandex.net/frontend-developer/cards-compressed/baikal.jpg'
   }
-  ];
+  ];*/
 
   const popupZoom = document.querySelector('.popup__zoom');
-  
-  initialCards.forEach((el) => {
-    addCard(el.name, el.link);
-});
+  initialCards()
+  .then(res => {
+    console.log(res)
+  res.forEach((element) => {
+    addCard(element.name, element.link, element.owner._id, element._id, element.likes.length)
+    element.likes.forEach((like) => {
+    //addCard(element.name, element.link, element.owner._id, element._id, element.likes.length, like._id) пытался сделать чтоб лайки горели, если в массиве лайков есть мой id, но не смог
+    })
+  });
+  })
   popupZoom.querySelector('#close-zoom').addEventListener('click', () => {//закрытие
     closePopup(popupZoom);
 });
@@ -52,8 +60,24 @@ const popupPlace = document.querySelector('.popup__place');//выбор инди
 const popupContainerProfile = popupProfileEdit.querySelector('.popup__container');
 const popupCloseProfile = popupContainerProfile.querySelector('.popup__first-close');//выбор кнопки закрытия для формы профиля
 const popupClosePlace = document.querySelector('.popup__second-close');//выбор кнопки закрытия для формы места
+const avatarBut = document.querySelector('.profile__avatar-button');
+const popupAvatar = document.querySelector('.popup__avatar-sub');
+const popupCloseAvatar = document.querySelector('#avatar-close');
 
 
+avatarBut.addEventListener('click', () => {
+  openPopup(popupAvatar);
+});
+
+popupCloseAvatar.addEventListener('click', (evt) => {
+  closePopup(popupAvatar);
+});
+
+popupAvatar.addEventListener('click', (evt) => {
+  if (evt.target.classList.contains('popup')) {
+    closePopup(popupAvatar);
+  }
+});
 
 //реализация открытия и закрытия двух форм
 
@@ -107,8 +131,11 @@ const place = document.querySelector('#place_name');//считывает стр�
 const img = document.querySelector('#place_src');//считывает строку и передает содержимое параметром(ссылка)
 //событие нажатия на кнопку и добавление карточки 
 formPlace.addEventListener('submit', (evt) => {
-  evt.preventDefault();
   addCard(place.value, img.value);
+  postCards(place.value, img.value)
+  .then((res) => {
+    console.log(res)
+  })
   closePopup(popupPlace);//сразу закрывает диалоговое окно
   place.value = '';
   img.value = '';
@@ -123,12 +150,34 @@ formPlace.addEventListener('submit', (evt) => {
 const profileForm = document.querySelector('.popup__profile-edit');
 const nameInput = profileForm.querySelector('#profile-nick');
 const jobInput = profileForm.querySelector('#profile-descriptions');
+const avatar = document.querySelector('.profile__avatar');
+
 
 profileForm.addEventListener('submit', (evt) => {
-  editProfile(nameInput.value, jobInput.value);
-  evt.preventDefault();
-  closePopup(popupProfileEdit);
+  profileChange(nameInput.value, jobInput.value)
+  .then((res) => {
+    profileName.textContent = res.name; 
+    profileJob.textContent = res.about;
+    console.log(res)
+    closePopup(popupProfileEdit)
+  })
+  
 });
+
+const avatarForm = document.querySelector('.popup__form-avatar');
+const avatarInput = avatarForm.querySelector('.popup__field');
+
+avatarForm.addEventListener('submit', (evt) => {
+  avatarChange(avatarInput.value)
+  .then((res) => {
+    avatar.src = res.avatar;
+    console.log(res)
+    closePopup(popupAvatar);
+  })
+})
+
+
+
 //-------------------------------------------------------РЕДАКТИРОВАНИЕ ПРОФИЛЯ---------------------------------------------------------------------- 
 //---------------------------------------------------------------------------------------------------------------------------------------------------
 
@@ -140,6 +189,17 @@ enableValidation({
   inputErrorClass: 'popup__field_tipe_error',
   errorClass: 'popup__profile-error_active'
 }); 
+//-------------------------------------------------------РЕДАКТИРОВАНИЕ АВАТАРКИ---------------------------------------------------------------------
+//---------------------------------------------------------------------------------------------------------------------------------------------------
 
+getInfo() 
 
+.then((res) => {
+  profileName.textContent = res.name;
+  profileJob.textContent = res.about;
+  avatar.src = res.avatar;
+  res._id
+})
+
+export {getInfo, deletePhotocard, addLike, deliteLike}//закинуть в api.js и убрать из cards
 

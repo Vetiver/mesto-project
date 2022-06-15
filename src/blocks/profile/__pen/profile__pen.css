@@ -1,0 +1,14 @@
+.profile_pen {
+  position: absolute;
+  height: 26px;
+  width: 26px;
+  top: 47px;
+  left: 47px;
+  display: none;
+  background: none;
+  cursor: pointer;
+}
+
+.profile_pen:hover + .profile__avatar {
+  opacity: 0.4;
+}
