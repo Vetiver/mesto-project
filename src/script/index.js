@@ -3,7 +3,7 @@ import {addCard} from './cards.js';
 import {editProfile, profileName, profileJob} from './profile.js';
 import {enableValidation} from './validation.js';
 import '../pages/index.css';
-import {initialCards, postCards, profileChange, avatarChange, addLike, deliteLike, getInfo, deletePhotocard} from './api.js';
+import {initialCards, postCards, profileChange, avatarChange, addLike, deliteLike, getInfo, deletePhotocard, config} from './api.js';
 //---------------------------------------------------------------------Функции открытия и закрытия-----------------------------------------------------------
 //-----------------------------------------------------------------------------------------------------------------------------------------------------------
 //Добавление дефолтных карточек
@@ -191,6 +191,9 @@ enableValidation({
 }); 
 //-------------------------------------------------------РЕДАКТИРОВАНИЕ АВАТАРКИ---------------------------------------------------------------------
 //---------------------------------------------------------------------------------------------------------------------------------------------------
+
+
+
 
 getInfo() 
 

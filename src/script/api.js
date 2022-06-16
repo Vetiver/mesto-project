@@ -1,120 +1,89 @@
-function initialCards() { return fetch('https://nomoreparties.co/v1/plus-cohort-11/cards', {
-  headers: {
-    authorization: '6f872e3b-157b-48f6-844b-86e70eaad5cc'
-  }
-})
-.then((res) => {
-  if (res.ok) {
-    return res.json()
-  }
-})
-}
-
-function postCards(name, link) { return fetch('https://nomoreparties.co/v1/plus-cohort-11/cards', {
-  method: 'POST',
+const config = {
+  baseUrl: 'https://nomoreparties.co/v1/plus-cohort-11',
   headers: {
     authorization: '6f872e3b-157b-48f6-844b-86e70eaad5cc',
-    'Content-Type': 'application/json'
+    'Content-Type': 'application/json',
   },
+};
+
+function checkResponse(res) {
+  if (res.ok) {
+    return res.json();
+}
+return Promise.reject(`Ошибка ${res.status}`);
+}
+
+
+function initialCards() { return fetch(`${config.baseUrl}/cards`, {
+  headers: config.headers,
+})
+.then(checkResponse)
+}
+
+function postCards(name, link) { return fetch(`${config.baseUrl}/cards`, {
+  method: 'POST',
+  headers: config.headers,
   body: JSON.stringify({
     name: name,
     link: link
   })
 })
-.then((res) => {
-  if (res.ok) {
-    return res.json()
-  }
-})
+.then(checkResponse)
 }
 
   const profileChange = (name, about) => {
-  return fetch('https://nomoreparties.co/v1/plus-cohort-11/users/me', {
+  return fetch(`${config.baseUrl}/users/me`, {
   method: 'PATCH',
-  headers: {
-    authorization: '6f872e3b-157b-48f6-844b-86e70eaad5cc',
-    'Content-Type': 'application/json'
-  },
+  headers: config.headers,
   body: JSON.stringify({
     name: name,
     about: about
   })
 })
-  .then((res) => {
-    if (res.ok) {
-      return res.json()
-    }
-  })
+.then(checkResponse)
 }
 
 const avatarChange = (avatar) => {
-  return fetch('https://nomoreparties.co/v1/plus-cohort-11/users/me/avatar', {
+  return fetch(`${config.baseUrl}/users/me/avatar`, {
   method: 'PATCH',
-  headers: {
-    authorization: '6f872e3b-157b-48f6-844b-86e70eaad5cc',
-    'Content-Type': 'application/json'
-  },
+  headers: config.headers,
   body: JSON.stringify({
    avatar: avatar
   })
 })
-  .then((res) => {
-    if (res.ok) {
-      return res.json()
-    }
-  })
+.then(checkResponse)
 }
 
 const addLike = (cardId) => {
-  return fetch(`https://nomoreparties.co/v1/plus-cohort-11/cards/likes/${cardId}`, {
+  return fetch(`${config.baseUrl}/cards/likes/${cardId}`, {
     method: 'PUT',
-    headers: {
-      authorization: '6f872e3b-157b-48f6-844b-86e70eaad5cc',
-      'Content-Type': 'application/json'
-    }
+    headers: config.headers,
   })
-  .then(res => {
-    return res.json()
-  })
+  .then(checkResponse)
 }
 
 const deliteLike = (cardId) => {
-  return fetch(`https://nomoreparties.co/v1/plus-cohort-11/cards/likes/${cardId}`, {
+  return fetch(`${config.baseUrl}/cards/likes/${cardId}`, {
     method: 'DELETE',
-    headers: {
-      authorization: '6f872e3b-157b-48f6-844b-86e70eaad5cc',
-      'Content-Type': 'application/json'
-    }
+    headers: config.headers,
   })
-  .then(res => {
-    return res.json()
-  })
+  .then(checkResponse)
 }
 
 const getInfo = () => {
-return fetch('https://nomoreparties.co/v1/plus-cohort-11/users/me', {
+return fetch(`${config.baseUrl}/users/me`, {
   method: 'GET',
-  headers: {
-    authorization: '6f872e3b-157b-48f6-844b-86e70eaad5cc',
-    'Content-Type': 'application/json'
-  }
+  headers: config.headers,
 })
-.then(res => {
-  return res.json()
-})
+  .then(checkResponse)
 }
 
 const deletePhotocard = (cardId) => {
-  return fetch(`https://nomoreparties.co/v1/plus-cohort-11/cards/${cardId}`, {
+  return fetch(`${config.baseUrl}/cards/${cardId}`, {
     method: 'DELETE',
-    headers: {
-      authorization: '6f872e3b-157b-48f6-844b-86e70eaad5cc',
-      'Content-Type': 'application/json'
-    }
+    headers: config.headers,
   })
-  .then(res => {
-    return res.json()
-  })
+  .then(checkResponse)
 }
 
 
@@ -123,5 +92,5 @@ const deletePhotocard = (cardId) => {
 
 
 
-export {initialCards, postCards, profileChange, avatarChange, addLike, deliteLike, getInfo, deletePhotocard}//закинуть в api.js и убрать из cards
+export {initialCards, postCards, profileChange, avatarChange, addLike, deliteLike, getInfo, deletePhotocard, config}//закинуть в api.js и убрать из cards
 
