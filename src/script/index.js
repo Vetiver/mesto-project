@@ -7,6 +7,36 @@ import {initialCards, postCards, profileChange, avatarChange, addLike, deliteLik
 //---------------------------------------------------------------------Функции открытия и закрытия-----------------------------------------------------------
 //-----------------------------------------------------------------------------------------------------------------------------------------------------------
 //Добавление дефолтных карточек
+function displayLike(place, card) {
+  place.textContent = card.likes.length;
+}
+
+function switchLike(button, cardId, place) {
+  button.addEventListener('click',() => {
+    if(button.classList.contains('card__like_active')) {
+      deliteLike(cardId)
+      .then((res) => {
+        button.classList.remove('card__like_active')
+        displayLike(place, res)
+      })
+      .catch(err => {
+        console.error(err.message)
+      });
+    } else {
+      addLike(cardId)
+      .then(res => {
+        button.classList.add('card__like_active')
+        displayLike(place, res)
+      })
+      .catch(err => {
+        console.error(err.message)
+      });
+    }
+  }) 
+}
+
+
+
 
 /*const initialCards = [
   {
@@ -36,20 +66,18 @@ import {initialCards, postCards, profileChange, avatarChange, addLike, deliteLik
   ];*/
 
   const popupZoom = document.querySelector('.popup__zoom');
-  initialCards()
-  .then(res => {
-    console.log(res)
-  res.forEach((element) => {
-    addCard(element.name, element.link, element.owner._id, element._id, element.likes.length)
-    element.likes.forEach((like) => {
-    //addCard(element.name, element.link, element.owner._id, element._id, element.likes.length, like._id) пытался сделать чтоб лайки горели, если в массиве лайков есть мой id, но не смог
-    })
-  });
+  Promise.all([getInfo(), initialCards()])
+  .then(([userData, cards]) => {
+    cards.forEach((element) => {
+      addCard(element.name, element.link, element._id, element.owner._id, element.likes.length, element, userData._id)
+    });
   })
+  .catch(err => {
+    console.error(err.message)
+  });
   popupZoom.querySelector('#close-zoom').addEventListener('click', () => {//закрытие
     closePopup(popupZoom);
 });
-
 //-------------------------------------------------------ДОБАВЛЕНИЕ ДЕФОЛТНЫХ КАРТОЧЕК-------------------------------------------------------------
 //-------------------------------------------------------------------------------------------------------------------------------------------------
 
@@ -131,18 +159,21 @@ const place = document.querySelector('#place_name');//считывает стр�
 const img = document.querySelector('#place_src');//считывает строку и передает содержимое параметром(ссылка)
 //событие нажатия на кнопку и добавление карточки 
 formPlace.addEventListener('submit', (evt) => {
-  addCard(place.value, img.value);
   postCards(place.value, img.value)
   .then((res) => {
-    console.log(res)
+    window.location.reload()
+    place.value = '';
+    img.value = '';
+    if (place.value.length == 0 && img.value.length == 0) {
+      const placeButton = formPlace.querySelector('.popup__submit-button');
+      placeButton.disabled = true;
+    }
+    closePopup(popupPlace);//сразу закрывает диалоговое окно
   })
-  closePopup(popupPlace);//сразу закрывает диалоговое окно
-  place.value = '';
-  img.value = '';
-  if (place.value.length == 0 && img.value.length == 0) {
-    const placeButton = formPlace.querySelector('.popup__submit-button');
-    placeButton.disabled = true;
-  }
+  .catch((err) => {
+   console.log(err.message)
+  })
+  
 });
 //-------------------------------------------------------ДОБАВЛЕНИЕ КАРТОЧКИ-------------------------------------------------------------------------
 //---------------------------------------------------------------------------------------------------------------------------------------------------
@@ -158,10 +189,11 @@ profileForm.addEventListener('submit', (evt) => {
   .then((res) => {
     profileName.textContent = res.name; 
     profileJob.textContent = res.about;
-    console.log(res)
     closePopup(popupProfileEdit)
   })
-  
+  .catch((err) => {
+    console.log(err.message)
+  })
 });
 
 const avatarForm = document.querySelector('.popup__form-avatar');
@@ -171,8 +203,10 @@ avatarForm.addEventListener('submit', (evt) => {
   avatarChange(avatarInput.value)
   .then((res) => {
     avatar.src = res.avatar;
-    console.log(res)
     closePopup(popupAvatar);
+  })
+  .catch((err) =>{
+    console.log(err.message)
   })
 })
 
@@ -203,6 +237,10 @@ getInfo()
   avatar.src = res.avatar;
   res._id
 })
+.catch((err) => {
+  console.log(err.message)
+})
 
-export {getInfo, deletePhotocard, addLike, deliteLike}//закинуть в api.js и убрать из cards
+
+export {getInfo, deletePhotocard, addLike, deliteLike, displayLike, switchLike}//закинуть в api.js и убрать из cards
 

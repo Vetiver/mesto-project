@@ -86,7 +86,11 @@ const deletePhotocard = (cardId) => {
   .then(checkResponse)
 }
 
-
+function cardsLikes() { return fetch(`${config.baseUrl}/cards/likes`, {
+  headers: config.headers,
+})
+.then(checkResponse)
+}
 
 
 
