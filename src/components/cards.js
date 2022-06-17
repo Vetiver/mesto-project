@@ -56,4 +56,4 @@ function addCard(placeValue, placeImg, cardId, ownerId, likeLen, card, myId) {
   cardContain.append(cardElement);
 }
 
-export {addCard};
+export {addCard, createCard};

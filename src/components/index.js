@@ -1,5 +1,5 @@
 import {openPopup, closePopup, closeByEscape} from './modals.js';
-import {addCard} from './cards.js';
+import {addCard, createCard} from './cards.js';
 import {editProfile, profileName, profileJob} from './profile.js';
 import {enableValidation} from './validation.js';
 import '../pages/index.css';
@@ -157,6 +157,7 @@ popupClosePlace.addEventListener('click', () => {
 //--------------------------------------------------------------------------------------------------------------------------------------------------
 
 //функция выбирает template потом клонирует содержимое во 2 переменную
+const cardContain = document.querySelector('.elements__card-container');
 const formPlace = document.querySelector('.popup__form-place');
 const buttonPlace = formPlace.querySelector('.popup__submit-button')
 const place = document.querySelector('#place_name');//считывает строку и передает содержимое параметром(название карточки)
@@ -166,7 +167,8 @@ formPlace.addEventListener('submit', (evt) => {
   postCards(place.value, img.value)
   .then((res) => {
     renderLoading(buttonPlace)
-    addCard(res.name, res.link, res._id, res.owner._id, res.likes.length, res, res.owner._id)
+    const cardElement = createCard(res.name, res.link, res._id, res.owner._id, res.likes.length, res, res.owner._id)
+    cardContain.prepend(cardElement)
     place.value = ''
     img.value = ''
     closePopup(popupPlace);//сразу закрывает диалоговое окно
