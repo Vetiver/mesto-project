@@ -10,6 +10,9 @@ import {initialCards, postCards, profileChange, avatarChange, addLike, deliteLik
 function displayLike(place, card) {
   place.textContent = card.likes.length;
 }
+function renderLoading(button) {
+  button.value = 'Сохранить...'
+}
 
 function switchLike(button, cardId, place) {
   button.addEventListener('click',() => {
@@ -155,19 +158,16 @@ popupClosePlace.addEventListener('click', () => {
 
 //функция выбирает template потом клонирует содержимое во 2 переменную
 const formPlace = document.querySelector('.popup__form-place');
+const buttonPlace = formPlace.querySelector('.popup__submit-button')
 const place = document.querySelector('#place_name');//считывает строку и передает содержимое параметром(название карточки)
 const img = document.querySelector('#place_src');//считывает строку и передает содержимое параметром(ссылка)
 //событие нажатия на кнопку и добавление карточки 
 formPlace.addEventListener('submit', (evt) => {
   postCards(place.value, img.value)
   .then((res) => {
-    window.location.reload()
-    place.value = '';
-    img.value = '';
-    if (place.value.length == 0 && img.value.length == 0) {
-      const placeButton = formPlace.querySelector('.popup__submit-button');
-      placeButton.disabled = true;
-    }
+    renderLoading(buttonPlace)
+    place.reset();
+    img.reset();
     closePopup(popupPlace);//сразу закрывает диалоговое окно
   })
   .catch((err) => {
@@ -179,6 +179,7 @@ formPlace.addEventListener('submit', (evt) => {
 //---------------------------------------------------------------------------------------------------------------------------------------------------
 
 const profileForm = document.querySelector('.popup__profile-edit');
+const profileButton = profileForm.querySelector('.popup__submit-button')
 const nameInput = profileForm.querySelector('#profile-nick');
 const jobInput = profileForm.querySelector('#profile-descriptions');
 const avatar = document.querySelector('.profile__avatar');
@@ -187,6 +188,7 @@ const avatar = document.querySelector('.profile__avatar');
 profileForm.addEventListener('submit', (evt) => {
   profileChange(nameInput.value, jobInput.value)
   .then((res) => {
+    renderLoading(profileButton)
     profileName.textContent = res.name; 
     profileJob.textContent = res.about;
     closePopup(popupProfileEdit)

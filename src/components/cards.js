@@ -22,7 +22,7 @@ function createCard(placeValue, placeImg, cardId, ownerId, likeLen, card, myId) 
   cardLike.textContent = likeLen;
   card.likes.forEach(el => {
     if(el._id == myId) {
-      cardElement.querySelector('.card__like').classList.add('card__like_active');
+      likeButton.classList.add('card__like_active');
     }
   })
     if(myId !== ownerId) {
