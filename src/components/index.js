@@ -166,8 +166,9 @@ formPlace.addEventListener('submit', (evt) => {
   postCards(place.value, img.value)
   .then((res) => {
     renderLoading(buttonPlace)
-    place.reset();
-    img.reset();
+    addCard(res.name, res.link, res._id, res.owner._id, res.likes.length, res, res.owner._id)
+    place.value = ''
+    img.value = ''
     closePopup(popupPlace);//сразу закрывает диалоговое окно
   })
   .catch((err) => {
