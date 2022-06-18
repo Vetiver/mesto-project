@@ -164,13 +164,14 @@ const place = document.querySelector('#place_name');//считывает стр�
 const img = document.querySelector('#place_src');//считывает строку и передает содержимое параметром(ссылка)
 //событие нажатия на кнопку и добавление карточки 
 formPlace.addEventListener('submit', (evt) => {
+  renderLoading(buttonPlace)
   postCards(place.value, img.value)
   .then((res) => {
-    renderLoading(buttonPlace)
     const cardElement = createCard(res.name, res.link, res._id, res.owner._id, res.likes.length, res, res.owner._id)
     cardContain.prepend(cardElement)
     place.value = ''
     img.value = ''
+    buttonPlace.disabled = true;
     closePopup(popupPlace);//сразу закрывает диалоговое окно
   })
   .catch((err) => {
@@ -189,9 +190,9 @@ const avatar = document.querySelector('.profile__avatar');
 
 
 profileForm.addEventListener('submit', (evt) => {
+  renderLoading(profileButton)
   profileChange(nameInput.value, jobInput.value)
   .then((res) => {
-    renderLoading(profileButton)
     profileName.textContent = res.name; 
     profileJob.textContent = res.about;
     closePopup(popupProfileEdit)
