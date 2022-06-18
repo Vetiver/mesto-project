@@ -171,6 +171,7 @@ formPlace.addEventListener('submit', (evt) => {
     cardContain.prepend(cardElement)
     place.value = ''
     img.value = ''
+    buttonPlace.textContent = 'Сохранить'
     buttonPlace.disabled = true;
     closePopup(popupPlace);//сразу закрывает диалоговое окно
   })
@@ -195,6 +196,7 @@ profileForm.addEventListener('submit', (evt) => {
   .then((res) => {
     profileName.textContent = res.name; 
     profileJob.textContent = res.about;
+    profileButton.textContent = 'Сохранить'
     closePopup(popupProfileEdit)
   })
   .catch((err) => {
