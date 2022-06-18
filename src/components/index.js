@@ -11,7 +11,7 @@ function displayLike(place, card) {
   place.textContent = card.likes.length;
 }
 function renderLoading(button) {
-  button.value = 'Сохранить...'
+  button.textContent = 'Сохранить...'
 }
 
 function switchLike(button, cardId, place) {
