@@ -71,6 +71,10 @@ function switchLike(button, cardId, place) {
   const popupZoom = document.querySelector('.popup__zoom');
   Promise.all([getInfo(), initialCards()])
   .then(([userData, cards]) => {
+    profileName.textContent = userData.name;
+    profileJob.textContent = userData.about;
+    avatar.src = userData.avatar;
+    userData._id
     cards.forEach((element) => {
       addCard(element.name, element.link, element._id, element.owner._id, element.likes.length, element, userData._id)
     });
@@ -171,12 +175,14 @@ formPlace.addEventListener('submit', (evt) => {
     cardContain.prepend(cardElement)
     place.value = ''
     img.value = ''
-    buttonPlace.textContent = 'Сохранить'
     buttonPlace.disabled = true;
     closePopup(popupPlace);//сразу закрывает диалоговое окно
   })
   .catch((err) => {
    console.log(err.message)
+  })
+  .finally(evt => {
+    buttonPlace.textContent = 'Сохранить'
   })
   
 });
@@ -196,18 +202,25 @@ profileForm.addEventListener('submit', (evt) => {
   .then((res) => {
     profileName.textContent = res.name; 
     profileJob.textContent = res.about;
-    profileButton.textContent = 'Сохранить'
     closePopup(popupProfileEdit)
   })
   .catch((err) => {
     console.log(err.message)
   })
-});
+  .finally(evt => {
+    profileButton.textContent = 'Сохранить'
+  })
+})
+
+
+
 
 const avatarForm = document.querySelector('.popup__form-avatar');
+const avatarButton = avatarForm.querySelector('.popup__submit-button')
 const avatarInput = avatarForm.querySelector('.popup__field');
 
 avatarForm.addEventListener('submit', (evt) => {
+  renderLoading(avatarButton)
   avatarChange(avatarInput.value)
   .then((res) => {
     avatar.src = res.avatar;
@@ -215,6 +228,9 @@ avatarForm.addEventListener('submit', (evt) => {
   })
   .catch((err) =>{
     console.log(err.message)
+  })
+  .finally(evt => {
+    avatarButton.textContent = 'Сохранить'
   })
 })
 
@@ -233,21 +249,6 @@ enableValidation({
 }); 
 //-------------------------------------------------------РЕДАКТИРОВАНИЕ АВАТАРКИ---------------------------------------------------------------------
 //---------------------------------------------------------------------------------------------------------------------------------------------------
-
-
-
-
-getInfo() 
-
-.then((res) => {
-  profileName.textContent = res.name;
-  profileJob.textContent = res.about;
-  avatar.src = res.avatar;
-  res._id
-})
-.catch((err) => {
-  console.log(err.message)
-})
 
 
 export {getInfo, deletePhotocard, addLike, deliteLike, displayLike, switchLike}//закинуть в api.js и убрать из cards
